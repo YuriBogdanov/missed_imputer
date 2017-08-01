@@ -1,4 +1,4 @@
 def zet_imputer:
     '''
-    Implementation of ZET algorythm (Zagoruiko, 1999)
+    Implementation of ZET algorithm (Zagoruiko, 1999)
     '''
