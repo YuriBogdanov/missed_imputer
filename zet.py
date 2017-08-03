@@ -11,13 +11,14 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
 
-def zet_fill(df,scale='standard',cmshape=5,alpha=3):
+def zet_fill(df,scale='standard',cmshape=5,alpha=3,use_imputed = True):
     '''
     Input:
     df - 2D array or pandas.DataFrame
     scale - {'standard','minmax','none'} method for scaling features
     cmshape - size of compact submatrix {cmshape,cmshape}
     alpha - contribution power of rows (columns) competence
+    use_imputed - use previously imputed values
     
     Returns:
     2D array of the same size with impted missing values   
@@ -86,7 +87,10 @@ def zet_fill(df,scale='standard',cmshape=5,alpha=3):
     M = df.shape[1]
 
     for x,y in nan_args:
-        tmp = pd.DataFrame(dfs)
+        if use_imputed:
+            tmp = pd.DataFrame(dfs_copy)
+        else:
+            tmp = pd.DataFrame(dfs)
 
         A = tmp.loc[x]
         comp_rows = pd.Series(index = range(N))
@@ -141,7 +145,7 @@ def zet_fill(df,scale='standard',cmshape=5,alpha=3):
 
         else:
             pred = np.nan
-            print('Warning: unable to make prediction!')
+            print('Warning: unable to make prediction for point ({},{})!'.format(x,y))
 
         dfs_copy[x,y] = pred
         
